@@ -30,7 +30,7 @@ import { ADDFONT } from '../../redux/slices/fontSlice/fontSlice';
 import logo from "../../assets/Logo.svg"
 import { SEARCHVALUE } from '../../redux/slices/searchValueSlice';
 import { BiSearch } from 'react-icons/bi';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation} from 'react-router-dom';
 
 
 const drawerWidth = 300;
@@ -93,7 +93,7 @@ const MainPage = () => {
   const [open, setOpen] = React.useState(false);
   const [filterOpen, setFilterOpen] = React.useState(false)
   const myKey = "AIzaSyCz5SovJVTzQrqA8ddsw_ZeiK8QACaPjlA"
-const navigate = useNavigate()  
+// const navigate = useNavigate()  
     
     const handleSearch = (search:any)=>{
       fetch(`https://www.googleapis.com/webfonts/v1/webfonts?key=${myKey}`)
