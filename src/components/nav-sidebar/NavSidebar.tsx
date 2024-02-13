@@ -147,6 +147,22 @@ const MainPage = () => {
 
   const fontSize = useSelector((state:any)=>state.fontsize_Data.fontSize)
 
+
+  const handleSort = (name:string)=>{
+    fetch(`https://www.googleapis.com/webfonts/v1/webfonts?key=${myKey}&sort=${name}`)
+    .then(res => res.json())
+    .then(response => {      
+      dispatch(ADDFONT(response.items.slice(0,200)))      
+      }
+    )
+  }
+
+
+
+
+
+
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -160,7 +176,7 @@ const MainPage = () => {
                   <div className='nav__search'>
                     <BiSearch/>
                     <input type="text" placeholder='Search Fonts' onChange={(e)=>e.target.value.length>0 ? handleSearch(e.target.value): handleAllData()}/>
-                    <select>
+                    <select onChange={(e:any)=>handleSort(e.target.value)}>
                       <option value="trending">trending</option>
                       <option value="popularity">popularity</option>
                       <option value="style">style</option>
