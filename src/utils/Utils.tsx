@@ -1,7 +1,6 @@
 import React from 'react'
 import "./Utils.scss"
 import { useSelector } from 'react-redux'
-import { RootState } from '@reduxjs/toolkit/query'
 
 const Utils = () => {
   return (
