@@ -10,3 +10,35 @@ a{
 .css-yfo96e .css-1v4ctyz{
     padding: 0 !important;
 }
+
+.families-range{
+    padding: 50px 0
+}
+
+
+.home{
+    padding-top: 100px;
+    padding-left: 50px;
+    >a{
+        border-radius: 20px;
+        transition: 0.3s;
+        padding: 20px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        border-bottom: 1px solid rgb(87, 86, 86);
+        >p:nth-child(1){
+            font-size: 16px;
+            >span{
+                font-size: 14px;
+                color: gray;
+            }
+        }
+        &:hover{
+            background-color: #f1efef;
+        }
+        &:active{
+            background-color: rgb(246, 135, 135);
+        }
+    }
+}

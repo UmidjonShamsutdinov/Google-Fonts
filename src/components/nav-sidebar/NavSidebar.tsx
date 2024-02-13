@@ -26,27 +26,33 @@ import { FONTSIZE } from '../../redux/slices/fontsizeSlice/fontsizeSlice';
 import { TEXTVALUE } from '../../redux/slices/textareaValue';
 import { Container1 } from '../../utils/Utils';
 import "./NavSidebar.scss"
+import { ADDFONT } from '../../redux/slices/fontSlice/fontSlice';
+import logo from "../../assets/Logo.svg"
+import { SEARCHVALUE } from '../../redux/slices/searchValueSlice';
+import { BiSearch } from 'react-icons/bi';
+import { useLocation, useNavigate } from 'react-router-dom';
+
 
 const drawerWidth = 300;
 
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
-  open?: boolean;
-}>(({ theme, open }) => ({
-  flexGrow: 1,
-  padding: theme.spacing(3),
-  transition: theme.transitions.create('margin', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  marginLeft: `-325px`,
-  ...(open && {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: -325,
-  }),
-}));
+// const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
+//   open?: boolean;
+// }>(({ theme, open }) => ({
+//   flexGrow: 1,
+//   padding: theme.spacing(3),
+//   transition: theme.transitions.create('margin', {
+//     easing: theme.transitions.easing.sharp,
+//     duration: theme.transitions.duration.leavingScreen,
+//   }),
+//   marginLeft: `-325px`,
+//   ...(open && {
+//     transition: theme.transitions.create('margin', {
+//       easing: theme.transitions.easing.easeOut,
+//       duration: theme.transitions.duration.enteringScreen,
+//     }),
+//     marginLeft: -325,
+//   }),
+// }));
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -78,11 +84,48 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
-  const MainPage = () => {
-    const dispatch = useDispatch()
+const MainPage = () => {
+  const {pathname} = useLocation()
+  console.log(pathname);
+  
   const theme = useTheme();
+  const dispatch = useDispatch()
   const [open, setOpen] = React.useState(false);
   const [filterOpen, setFilterOpen] = React.useState(false)
+  const myKey = "AIzaSyCz5SovJVTzQrqA8ddsw_ZeiK8QACaPjlA"
+const navigate = useNavigate()  
+    
+    const handleSearch = (search:any)=>{
+      fetch(`https://www.googleapis.com/webfonts/v1/webfonts?key=${myKey}`)
+      .then(res => res.json())
+      .then(response => {
+        dispatch(ADDFONT(response.items.slice(0,200).filter((e:any)=>e.family.toLowerCase().includes(search))))  
+        dispatch(SEARCHVALUE(search))
+        if(pathname.includes("/font")){
+          navigate("/")
+        }
+      }
+      )
+    }
+    
+    
+    const {searchValue} = useSelector((state:any)=>state.search_Data)
+    searchValue.length>0 && handleSearch(searchValue)
+    // console.log(pathName);
+    
+  
+  
+  const handleAllData = ()=>{
+    fetch(`https://www.googleapis.com/webfonts/v1/webfonts?key=${myKey}`)
+    .then(res => res.json())
+    .then(response => {      
+      dispatch(ADDFONT(response.items.slice(0,200)))      
+      }
+    )
+  }
+  
+  
+  
   dispatch(OPENVALUE(filterOpen))
   const filterDrawerOpen = () => {
     setFilterOpen(true)
@@ -112,9 +155,19 @@ const DrawerHeader = styled('div')(({ theme }) => ({
           <div className='nav__bar'>
             <Typography variant="h6" noWrap component="div" flex={1} color={'black'}>
               <Container1>
-                <div>
-                  Persistent drawer
-                  <input type="text" />
+                <div className='nav__main'>
+                  <img src={logo} alt="" />
+                  <div className='nav__search'>
+                    <BiSearch/>
+                    <input type="text" placeholder='Search Fonts' onChange={(e)=>e.target.value.length>0 ? handleSearch(e.target.value): handleAllData()}/>
+                    <select>
+                      <option value="trending">trending</option>
+                      <option value="popularity">popularity</option>
+                      <option value="style">style</option>
+                      <option value="alpha">alpha</option>
+                      <option value="date">date</option>
+                    </select>
+                  </div>
                 </div>
               </Container1>
             </Typography>
@@ -131,13 +184,13 @@ const DrawerHeader = styled('div')(({ theme }) => ({
               <MenuIcon />
             </IconButton>
           </div>
-          <IconButton
-          onClick={()=>{
-            filterDrawerOpen()
-            setOpen(false)
-          }}
-          sx={{ mr: 2, ...(filterOpen && { display: 'none' }) }}
-          >
+          <IconButton          
+            onClick={()=>{
+              filterDrawerOpen()            
+              setOpen(false)
+            }}
+            sx={{ mr: 2, ...(filterOpen && { display: 'none' }) }}
+            >
             <CloseSharp/>
             <p>Filter</p>
           </IconButton>
@@ -164,14 +217,14 @@ const DrawerHeader = styled('div')(({ theme }) => ({
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List>
+        <List className='textareaFilter'>
           <h2>Preview</h2>
           <textarea id="text-area-filter" placeholder='Type Something' onChange={(e)=>{
             dispatch(TEXTVALUE(e.target.value))
           }}></textarea>
           <div>
-            <label htmlFor="fontSize">{fontSize}</label>
-            <input name='fontSize' type="range" min={8} max={300} onChange={
+            <label htmlFor="fontSize">{fontSize}px</label>
+            <input name='fontSize' value={fontSize} type="range" min={8} max={300} onChange={
               (e)=>{dispatch(FONTSIZE(e.target.value))
               }
             }/>

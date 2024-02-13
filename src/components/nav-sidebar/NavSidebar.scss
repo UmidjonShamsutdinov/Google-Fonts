@@ -2,4 +2,64 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
+    padding-top: 10px;
+}
+
+.nav__main{
+    display: flex;
+}
+
+
+.nav__search{
+    display: flex;
+    align-items: center;
+    background-color: #F3F6FC;
+    padding: 0 20px;
+    width: 100%;
+    border-radius: 50px;
+    >input{
+        padding: 20px 15px;
+        flex: 1;
+        background-color: transparent;
+        border: none;
+        outline: none;
+    }
+    >select{
+        padding: 20px 15px;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        border-left: 1px solid rgb(168, 166, 166);
+    }
+}
+
+
+.textareaFilter{
+    display: flex;
+    flex-direction: column;
+    padding: 20px !important;
+    gap: 20px 0;
+    >textarea{
+        width: 100%;
+        height: 10rem;
+        resize: none;
+        padding: 20px;
+        border: 2px solid transparent;
+        outline: none;
+        border-radius: 20px;
+        background-color: rgb(227, 227, 248);
+        &:focus{
+            border: 2px solid rgb(96, 96, 242);
+            
+        }
+    }
+    >div{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        >label{
+            width: 50px;
+        }
+    }
 }
