@@ -101,16 +101,16 @@ const navigate = useNavigate()
       .then(response => {
         dispatch(ADDFONT(response.items.slice(0,200).filter((e:any)=>e.family.toLowerCase().includes(search))))  
         dispatch(SEARCHVALUE(search))
-        if(pathname.includes("/font")){
-          navigate("/")
-        }
+        // if(pathname.includes("/font")){
+        //   navigate("/")
+        // }
       }
       )
     }
     
     
-    const {searchValue} = useSelector((state:any)=>state.search_Data)
-    searchValue.length>0 && handleSearch(searchValue)
+    // const {searchValue} = useSelector((state:any)=>state.search_Data)
+    // searchValue.length>0 && handleSearch(searchValue)
     // console.log(pathName);
     
   
